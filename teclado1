@@ -1,0 +1,59 @@
+from direct.showbase.ShowBase import ShowBase
+
+class Juego(ShowBase):
+	p = 50
+	altura = 0
+	izquierda = 0
+	
+	def __init__(self):
+		
+		ShowBase.__init__(self)
+		self.model = loader.loadModel("li2_2.bam")
+		self.model.reparentTo(render)
+
+		#X, Acercamiento de 50, Altitud de -5
+
+		self.model.setPos(self.izquierda, self.p, -5)
+
+		self.accept("w", self.Adelante)
+		self.accept("s", self.Bajar)
+		self.accept("a", self.Izquierda)
+		self.accept("d", self.Derecha)
+		
+		self.keyMap = {
+			"up" : False,
+			"down" : False,
+			"left" : False,
+			"right" : False,
+			"shoot" : False
+        }
+
+	def Bajar(self):
+		self.altura = self.altura-1
+		self.model.setPos(self.izquierda, self.altura, -5)
+		print ("Bajar")
+
+	def Adelante(self):
+		self.altura = self.altura+1
+		self.model.setPos(self.izquierda, self.altura, -5)
+		print ("Adelante")
+
+	def Izquierda(self):
+		self.izquierda = self.izquierda-0.05
+		self.model.setPos(self.izquierda, self.altura, -5)
+		print ("Izquierda")
+
+	def Derecha(self):
+		self.izquierda = self.izquierda+0.05
+		self.model.setPos(self.izquierda, self.altura, -5)
+		print ("Izquierda")
+
+	def updateKeyMap(self, controlName, controlState):
+		self.keyMap[controlName] = controlState
+		self.p = self.p+10
+		self.model.setPos(0, self.p, -5)
+		print (controlName, "set to", controlState)
+
+
+juego = Juego()
+juego.run()
