@@ -1,59 +1,59 @@
 from direct.showbase.ShowBase import ShowBase
 
-class Juego(ShowBase):
-	p = 50
-	altura = 0
-	izquierda = 0
+class Avion(ShowBase):
+	Acercamiento = 50
+	Altitud = 0
+	Horizontal = 0
+	
+	Velocidad = 0.5
+	VelocidadAcercamiento = 0.5
 	
 	def __init__(self):
 		
 		ShowBase.__init__(self)
 		self.model = loader.loadModel("li2_2.bam")
 		self.model.reparentTo(render)
+		self.model.setPos(self.Horizontal, self.Acercamiento , self.Altitud)
 
-		#X, Acercamiento de 50, Altitud de -5
-
-		self.model.setPos(self.izquierda, self.p, -5)
-
-		self.accept("w", self.Adelante)
-		self.accept("s", self.Bajar)
+		self.accept("w", self.Acercar)
+		self.accept("s", self.Alejar)
 		self.accept("a", self.Izquierda)
 		self.accept("d", self.Derecha)
-		
-		self.keyMap = {
-			"up" : False,
-			"down" : False,
-			"left" : False,
-			"right" : False,
-			"shoot" : False
-        }
+		self.accept("2", self.Subir)
+		self.accept("x", self.Bajar)
+
+	def Acercar(self):
+		self.Acercamiento = self.Acercamiento + self.VelocidadAcercamiento
+		self.model.setPos(self.Horizontal, self.Acercamiento , self.Altitud)
+		print ("Acercar", self.Altitud)
+
+	def Alejar(self):
+		self.Acercamiento = self.Acercamiento - self.VelocidadAcercamiento
+		self.model.setPos(self.Horizontal, self.Acercamiento , self.Altitud)
+		print ("Alejar", self.Altitud)
+
+
+	def Subir(self):
+		self.Altitud = self.Altitud + self.Velocidad
+		self.model.setPos(self.Horizontal, self.Acercamiento , self.Altitud)
+		print ("Subir")
 
 	def Bajar(self):
-		self.altura = self.altura-1
-		self.model.setPos(self.izquierda, self.altura, -5)
+		self.Altitud = self.Altitud - self.Velocidad
+		self.model.setPos(self.Horizontal, self.Acercamiento , self.Altitud)
 		print ("Bajar")
 
-	def Adelante(self):
-		self.altura = self.altura+1
-		self.model.setPos(self.izquierda, self.altura, -5)
-		print ("Adelante")
-
 	def Izquierda(self):
-		self.izquierda = self.izquierda-0.05
-		self.model.setPos(self.izquierda, self.altura, -5)
+		self.Horizontal = self.Horizontal-self.Velocidad
+		self.model.setPos(self.Horizontal, self.Acercamiento , self.Altitud)
 		print ("Izquierda")
 
 	def Derecha(self):
-		self.izquierda = self.izquierda+0.05
-		self.model.setPos(self.izquierda, self.altura, -5)
-		print ("Izquierda")
-
-	def updateKeyMap(self, controlName, controlState):
-		self.keyMap[controlName] = controlState
-		self.p = self.p+10
-		self.model.setPos(0, self.p, -5)
-		print (controlName, "set to", controlState)
+		self.Horizontal = self.Horizontal+self.Velocidad
+		self.model.setPos(self.Horizontal, self.Acercamiento , self.Altitud)
+		print ("Derecha")
 
 
-juego = Juego()
-juego.run()
+miAvion = Avion()
+miAvion.run()
+
